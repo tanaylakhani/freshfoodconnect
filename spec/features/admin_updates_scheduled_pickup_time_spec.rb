@@ -22,7 +22,7 @@ feature "Admin updates schedule pickup time" do
   end
 
   def visit_as_admin(zone)
-    visit zone_path(zone, as: create(:user, :admin))
+    visit zone_path(zone, as: create(:admin))
   end
 
   def dayname_for(datetime)
@@ -30,7 +30,9 @@ feature "Admin updates schedule pickup time" do
   end
 
   def update_current_scheduled_pickup(start_at:)
-    click_on t("scheduled_pickups.show.edit")
+    within_role "pickup-time" do
+      click_on t("scheduled_pickups.show.edit")
+    end
 
     fill_form_and_submit(
       :scheduled_pickup,

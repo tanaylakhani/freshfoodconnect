@@ -1,0 +1,22 @@
+<div class="content-wrapper-large content-container">
+  <h2 class="section-label"><%= t(".header", zipcode: @zipcode) %></h2>
+  <% if current_user.admin? %>
+    <%= link_to "Add Zipcode", new_zone_url(zipcode: @zipcode), class: "btn" %>
+  <% end %>
+
+  <table>
+    <thead>
+      <tr>
+        <th><%= t(".columns.name") %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%- @subscriptions.each do |subscription| %>
+        <tr>
+          <td><%= subscription.email %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+</div>

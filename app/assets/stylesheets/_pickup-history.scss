@@ -15,11 +15,23 @@
     background-color: $red;
   }
 
-  &.no-donation {
+  &.no_donation {
     color: $label-font-color;
 
     &::before {
       background-color: $label-font-color;
+    }
+  }
+
+  &.confirmed::before {
+    background-color: $brand-orange;
+  }
+
+  &.pending {
+    color: $medium-gray;
+
+    &::before {
+      background-color: $medium-gray;
     }
   }
 }

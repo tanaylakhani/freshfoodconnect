@@ -11,8 +11,11 @@ class ProfilesController < ApplicationController
     @profile = build_profile
 
     if @profile.update(profile_params)
-      redirect_to profile_url
+      GeocodeJob.perform_later(@profile.location)
+
+      redirect_to profile_url, flash: { success: t(".success") }
     else
+      flash[:error] = t(".error")
       render :edit
     end
   end

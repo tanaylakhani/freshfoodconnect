@@ -28,6 +28,16 @@ th {
 .table-actions {
   text-align: right;
 
+  button {
+    color: $action-color;
+
+    &:active,
+    &:focus,
+    &:hover {
+      color: shade($action-color, 25%);
+    }
+  }
+
   .table-delete {
     color: $red;
 
@@ -38,8 +48,16 @@ th {
 }
 
 .table-link {
+  background: none;
+  font-weight: 400;
   margin: 0 $xsmall-spacing;
+  padding: 0;
   text-decoration: underline;
+
+  &:hover,
+  &:focus {
+    background: none;
+  }
 
   &:first-child {
     margin-left: 0;
@@ -48,4 +66,8 @@ th {
   &:last-child {
     margin-right: 0;
   }
+}
+
+.btn-cell {
+  text-align: right;
 }

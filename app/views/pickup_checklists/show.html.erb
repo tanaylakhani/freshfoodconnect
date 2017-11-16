@@ -1,0 +1,40 @@
+<div class="content-wrapper-large content-container">
+  <h3>
+    <%= t(".header", zipcode: @pickup_checklist.zipcode) %>
+    <%= link_to(
+      zone_scheduled_pickup_path(@pickup_checklist.zone, @pickup_checklist),
+      class: "pickup-checklist-date",
+    ) do %>
+      <%= l(@pickup_checklist.date) %>
+    <% end %>
+  </h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th><%= t(".columns.donor") %></th>
+        <th><%= t(".columns.address") %></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @pickup_checklist.donations.each do |donation| %>
+        <tr>
+          <td data-role="donor"><%= donation.donor.name %></td>
+          <td><address><%= donation.address %></address></td>
+          <td class="btn-cell">
+            <% if donation.picked_up? %>
+              <%= button_to donation_pickup_path(donation), method: :delete do %>
+                <%= t(".undo") %>
+              <% end %>
+            <% else %>
+              <%= button_to donation_pickup_path(donation), method: :patch do %>
+                <%= t(".confirm") %>
+              <% end %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

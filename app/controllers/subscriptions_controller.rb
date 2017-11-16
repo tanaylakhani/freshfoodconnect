@@ -1,11 +1,8 @@
 class SubscriptionsController < ApplicationController
   skip_before_action :require_login
+  before_action :redirect_if_supported, only: [:new, :create]
 
   def new
-    if zipcode.blank?
-      redirect_to root_url
-    end
-
     @subscription = Subscription.new(zipcode: zipcode)
   end
 
@@ -19,17 +16,31 @@ class SubscriptionsController < ApplicationController
     end
   end
 
+  def index
+    @zipcode = params[:zipcode]
+    @subscriptions = Subscription.where(zipcode: @zipcode)
+  end
+
   private
+
+  def redirect_if_supported
+    if Zone.supported?(zipcode)
+      redirect_to new_zone_registration_url(zipcode)
+    end
+  end
 
   def build_subscription
     Subscription.new(subscription_params)
   end
 
   def subscription_params
-    params.require(:subscription).permit(:email, :zipcode)
+    params.
+      require(:subscription).
+      permit(:email, :zipcode).
+      merge(zipcode: zipcode)
   end
 
   def zipcode
-    params[:zipcode]
+    params[:zone_id]
   end
 end

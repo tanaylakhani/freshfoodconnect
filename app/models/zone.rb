@@ -21,9 +21,11 @@ class Zone < ActiveRecord::Base
     uniqueness: { case_sensitive: false },
     zipcode: { country_code: :us }
 
+  has_many :admins, through: :region
   has_many :locations, foreign_key: :zipcode, primary_key: :zipcode
   has_many :scheduled_pickups
   has_many :users, through: :locations
+  belongs_to :region
 
   def self.supported?(zipcode)
     where(zipcode: zipcode).any?

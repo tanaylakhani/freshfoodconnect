@@ -1,0 +1,19 @@
+<h2 class="section-label"><%= t(".header") %></h2>
+
+<table>
+  <thead>
+    <tr>
+      <th><%= t(".columns.name") %></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render_user_rows(admins) do |admin| %>
+      <td><%= admin.name %></td>
+      <td class="table-actions">
+        <%= render("users/demote", user: admin) %>
+        <%= render("users/delete", user: admin) %>
+      </td>
+    <% end %>
+  </tbody>
+</table>

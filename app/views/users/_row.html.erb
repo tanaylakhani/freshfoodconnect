@@ -1,0 +1,5 @@
+<% users.each do |user| %>
+  <%= content_tag_for(:tr, user) do %>
+    <%= yield(user) %>
+  <% end %>
+<% end %>

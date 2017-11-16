@@ -5,6 +5,8 @@ en:
         "%m/%d/%Y"
       with_weekday:
         "%a %m/%d/%y"
+      long_with_weekday:
+        "%A %B %-d, %Y"
     hours:
       - "12:00 am"
       - "1:00 am"
@@ -34,8 +36,10 @@ en:
   application:
     header:
       profile: "Profile"
+      regions: "Regions"
       sign_in: "Sign In"
       sign_out: "Sign Out"
+      users: "Users"
       zipcodes: "Zipcodes"
     welcome_modal:
       close: "Got It! Take me to my profile."
@@ -55,6 +59,21 @@ en:
     update:
       success: "Confirmation updated."
 
+  cyclist_invitations:
+    create:
+      success: "Cyclist account created."
+    new:
+      header: "Invite a Cyclist"
+    show:
+      header: "New Cyclist profile created!"
+      instructions:
+        >
+          An email has been sent to %{name} at %{email} with instructions on how to set their password and finish creating their cyclist profile.
+
+      fallback:
+        >
+          If the new Cyclist does not receive the email, send them this link to reset the password manually:
+
   donations:
     confirm:
       text: "Donating"
@@ -67,19 +86,46 @@ en:
     edit:
       header: "Donation Info"
       prompt: "Would you like to change your donation status?"
-    sizes:
-      small: "Small"
-      medium: "Medium"
-      large: "Large"
+    history:
+      columns:
+        date: "Date"
+        status: "Pickup Confirmation"
     status:
       html: Donation Status for <span class="next-pickup-date">%{date}</span>
       text: "Would you like to change your donation status?"
     statuses:
       confirmed: "Donating"
       declined: "Not Donating"
-      pending: "Pending"
+      pending: "Unknown"
+      picked_up: "Picked up"
     update:
       success: "Donation updated."
+
+  donations_mailer:
+    request_confirmation:
+      edit: "Confirm my donation"
+      prompt: "Do you have fresh vegetables to donate this week?"
+      subject: "Please confirm your donation for %{range}"
+      time_range: "We'll be in your area %{range}."
+
+  donors:
+    show:
+      grow_information: "Grow information"
+      grow_information_sentence: "The produce %{on_site} grown at the pickup location which is a %{location_type}."
+      address: "Address"
+      header: "Donation History"
+      grown_on_site: "is"
+      grown_off_site: "is not"
+
+  google_maps:
+    google_map:
+      empty: "There are no confirmed donations."
+
+  locations:
+    form:
+      header: "Additional Info"
+    update:
+      success: "Pickup information updated."
 
   marketing:
     index:
@@ -92,6 +138,26 @@ en:
       text: "We'll be in touch with you once we begin servicing your area. We look forward to your contributions to Fresh Food Connect!"
       action: "Sounds Great!"
 
+  pickup_checklists:
+    show:
+      header: "Pickup Checklist for %{zipcode} on"
+      confirm: "Confirm"
+      undo: "Undo"
+      columns:
+        donor: "Supplier"
+        address: "Address"
+
+  pickups:
+    destroy:
+      success: "Donation pickup undone."
+    statuses:
+      confirmed: "Donating - Confirmation data not yet entered"
+      no_donation: "Not donating"
+      pending: "Unconfirmed"
+      success: "Picked up"
+    update:
+      success: "Donation pickup confirmed."
+
   profiles:
     edit:
       header: "Edit Profile"
@@ -102,10 +168,21 @@ en:
     show:
       pickup: "Pickup Info"
       edit: "Edit Personal Info"
+    update:
+      error: "There was an issue updating your personal information."
+      success: "Your personal information has been updated."
+
+  promotions:
+    create:
+      success: "%{name} has been promoted to an administrator."
+    destroy:
+      success: "%{name} is no longer an administrator."
 
   scheduled_pickups:
+    create:
+      success: "The pickup has been scheduled."
     edit:
-      header: "Edit this scheduled pickup"
+      header: "Reschedule this week's pickup"
       prompt: "Be sure to include the earliest and latest pickup times."
     new:
       header: "Schedule the next pickup"
@@ -113,25 +190,97 @@ en:
     scheduled_pickup:
       header: "Scheduled Pickup Time"
     show:
-      edit: "Edit"
+      confirmation:
+        header: "Scheduled Confirmation Time"
+        time: "Confirmation emails will be sent on %{time}"
+      edit: "Reschedule"
+      time: "Scheduled Pickup Time"
+    donations:
+      checklist: "View Cyclist Checklist"
+      columns:
+        address: "Address"
+        name: "Supplier"
+        status: "Donation Status for %{date}"
+      header: "Donations"
     update:
       success: "The pickup has been rescheduled."
+    zone:
+      edit: "Schedule"
+
+  region_zones:
+    create:
+      success: "The %{zipcode} zipcode has been successfully added."
+    destroy:
+      confirm: "Are you sure you want to remove the %{zipcode} zipcode from this region?"
+      success: "The %{zipcode} zipcode has been successfully removed."
+      text: "Remove"
+    new:
+      header: "Add a zipcode to the %{name} region"
+
+  region_admins:
+    destroy:
+      confirm: "Are you sure you want to remove %{admin_name} as administrator for this region?"
+      text: "Unassign"
+      success: "Administrator %{admin_name} unassigned from region successfully."
+    update:
+      success: "Administrator %{admin_name} assigned to region successfully."
+    create:
+      success: "Administrator %{admin_name} assigned to region successfully."
+    new:
+      header: "Assign an Administrator to the %{name} region"
+    edit:
+      header: "Change Administrator for the %{name} region"
+
+  regions:
+    create:
+      success: "The %{name} region has been added."
+    destroy:
+      confirm: "Are you sure you want to delete the %{name} region?"
+      failure: "There was a problem trying to delete the %{name} region. Please try again later."
+      success: "The %{name} region has been successfully deleted."
+      text: "Delete"
+    index:
+      new: "Add Region"
+      no_regions: "There are currently no regions. Please create one."
+      title: "Regions"
+    new:
+      header: "Create a new region"
+    region:
+      zones:
+        one: "%{count} Zipcode"
+        other: "%{count} Zipcodes"
+    show:
+      admin: "Administrator"
+      assign_admin: "Assign Administrator"
+      add_admin: "Add Administrator"
+      no_admin: "No Administrator assigned to this region"
+      add_zone: "Add Zipcode"
+      no_unassociated_zones: "There are currently no zipcodes that can be associated with this region.  Please create some."
+      no_zones: "There are currently no zipcodes associated with this region. Please add one."
+      zones: "Zipcodes"
 
   registrations:
     form:
-      prompt: "In order to participate in our program, you'll need to create an account so we know where to come make the pickup and to let us know each week if you have veggies available to donate. Please provide us with some information below:"
+      prompt: "In order to participate in Fresh Food Connect, you'll need to create an account. We'll need your address so we know where to pick up your donated veggies, and your other contact information so we can communicate with you about pickup times:"
+      food_safety_policy: "Food Safety Policy"
+      terms_and_conditions_accepted: "Terms and Conditions"
     new:
       header: "Our service is available in your area!"
-
   subscriptions:
     form:
       prompt: "But there's good news! If you'd like to provide us with your email, we will notify you once we begin service in your area:"
       decline: "No thanks, take me back to the homepage."
     new:
       header: "We're sorry, our service is not available in your area at this time."
+    index:
+      header: "People wishing to donate in %{zipcode}"
+      columns:
+        name: "Email"
 
   time:
     formats:
+      at:
+        "%A %B %-d, %Y at %l:%M %P"
       default:
         "%a, %b %-d, %Y at %r"
       date:
@@ -140,7 +289,7 @@ en:
         "%B %d"
 
   time_ranges:
-    format: "%{weekday} between %{start_at} and %{end_at}"
+    format: "%{date} between %{start_at} and %{end_at}"
 
   titles:
     application: Fresh Food Connect
@@ -149,13 +298,47 @@ en:
     unscheduled_donation:
       text: "There are no pickups scheduled for this week."
 
+  users:
+    admins:
+      columns:
+        name: "Name"
+      header: "Admins"
+    cyclists:
+      columns:
+        name: "Name"
+      header: "Cyclists"
+      new: "+ Invite Cyclist"
+      register: "Register"
+    delete:
+      confirm: "Are you sure you want to delete %{name}?"
+      text: "Delete"
+    demote:
+      confirm: "Are you sure you want to revoke this administrator?"
+      text: "Revoke"
+    destroy:
+      success: "Successfully deleted %{name}."
+    donors:
+      columns:
+        address: "Address"
+        name: "Name"
+      header: "Suppliers"
+      profile_and_history: "Donation History"
+    promote:
+      confirm: "Are you sure you want to promote this user?"
+      text: "Make Admin"
+
   validations:
-    unsupported: "We're sorry, our service is not available in %{zipcode} at this time."
+    accepted: "must be checked"
+    deactivated: "This account has been deactivated."
+    locations:
+      unsupported: "Fresh Food Connect is currently not available in %{zipcode}. Please contact info@freshfoodconnect.org if you have moved or need to change your ZIP code."
 
   zones:
     defaults:
       prompt:
         "Pickups for %{zipcode} are usually scheduled for %{day} between %{start} and %{end}"
+    edit:
+      header: "Schedule future pickups for %{zipcode}"
     index:
       active: "Active Zipcodes"
       inactive: "Inactive Zipcodes"
@@ -163,9 +346,14 @@ en:
       suppliers:
         one: "%{count} Supplier"
         other: "%{count} Suppliers"
+      subscriptions:
+        one: "%{count} Subscription"
+        other: "%{count} Subscriptions"
     new:
       header: "Activate a Zipcode"
       prompt: "Be sure to select a day and time range that pickups will typically be scheduled for."
 
     show:
-      no_pickup: "There are no pickups scheduled for this week."
+      no_pickup: "Fresh Food Connect is not currently available in your area. There are currently no scheduled pickups in your area."
+    update:
+      success: "Future pickups for this zipcode have been rescheduled."

@@ -16,7 +16,9 @@ describe Zone do
 
   it { should have_many(:locations) }
   it { should have_many(:scheduled_pickups) }
+  it { should have_many(:admins).through(:region) }
   it { should have_many(:users).through(:locations) }
+  it { should belong_to(:region) }
 
   context "uniqueness" do
     subject { build(:zone) }

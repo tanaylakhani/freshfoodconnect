@@ -2,7 +2,10 @@ class Registration
   include ActiveModel::Model
 
   validates :name, presence: true
-  validate :zipcode_is_supported
+  validates :organic_growth_asserted,
+    presence: { message: I18n.t("validations.accepted") }
+  validates :terms_and_conditions_accepted,
+    presence: { message: I18n.t("validations.accepted") }
 
   attr_accessor(
     :address,
@@ -17,14 +20,22 @@ class Registration
     :email=,
     :name,
     :name=,
+    :organic_growth_asserted,
+    :organic_growth_asserted=,
     :password,
     :password=,
+    :terms_and_conditions_accepted,
+    :terms_and_conditions_accepted=,
     to: :user,
   )
 
   delegate(
     :address,
     :address=,
+    :grown_on_site,
+    :grown_on_site=,
+    :location_type,
+    :location_type=,
     :zipcode,
     :zipcode=,
     to: :location,
@@ -75,12 +86,6 @@ class Registration
 
   def donor_enrollment
     @donor_enrollment ||= DonorEnrollment.new(location: location)
-  end
-
-  def zipcode_is_supported
-    unless zipcode.blank? || Zone.supported?(zipcode)
-      errors[:zipcode] = I18n.t("validations.unsupported", zipcode: zipcode)
-    end
   end
 
   def expose_errors

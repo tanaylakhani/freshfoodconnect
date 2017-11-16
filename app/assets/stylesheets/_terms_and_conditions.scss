@@ -1,0 +1,27 @@
+.terms-and-conditions {
+  p.uppercase {
+    text-transform: uppercase;
+  }
+
+  ul {
+    list-style-type: lower-alpha;
+    margin-left: 30px;
+
+    li {
+      list-style-type: lower-alpha;
+      margin: $base-spacing 0;
+
+      &::before {
+        display: none;
+      }
+    }
+
+    .roman {
+      li {
+        list-style-type: lower-roman;
+        margin: $base-spacing 0;
+      }
+    }
+
+  }
+}

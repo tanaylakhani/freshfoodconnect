@@ -1,0 +1,15 @@
+<tr>
+  <td>
+    <%= link_to donor_path(donation.donor), class: "table-link" do %>
+      <%= donation.donor.name %>
+    <% end %>
+  </td>
+
+  <td>
+    <address><%= donation.address %></address>
+  </td>
+
+  <td class="pickup-confirmation <%= status_for_pickup(donation) %>">
+    <%= label_for_pickup(donation) %>
+  </td>
+</tr>

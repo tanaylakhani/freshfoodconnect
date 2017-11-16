@@ -1,12 +1,9 @@
 class RegistrationsController < ApplicationController
   skip_before_action :require_login
+  before_action :redirect_if_unsupported, only: [:new]
 
   def new
-    if zipcode.present?
-      @registration = Registration.new(zipcode: zipcode)
-    else
-      redirect_to root_url
-    end
+    @registration = Registration.new(zipcode: zone.zipcode)
   end
 
   def create
@@ -23,8 +20,16 @@ class RegistrationsController < ApplicationController
 
   private
 
-  def zipcode
-    params[:zipcode]
+  def redirect_if_unsupported
+    zone = Zone.find_by(zipcode: zipcode)
+
+    if zone.nil?
+      redirect_to new_zone_subscription_url(zipcode)
+    end
+  end
+
+  def zone
+    Zone.find_by!(zipcode: zipcode)
   end
 
   def build_registration
@@ -36,9 +41,17 @@ class RegistrationsController < ApplicationController
       permit(
         :address,
         :email,
+        :grown_on_site,
+        :location_type,
         :name,
+        :organic_growth_asserted,
         :password,
-        :zipcode,
-      )
+        :terms_and_conditions_accepted,
+      ).
+      merge(zipcode: zone.zipcode)
+  end
+
+  def zipcode
+    params[:zone_id]
   end
 end

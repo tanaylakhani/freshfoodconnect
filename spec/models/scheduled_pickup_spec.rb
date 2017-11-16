@@ -1,13 +1,15 @@
 require "rails_helper"
 
 describe ScheduledPickup do
-  it { should belong_to(:zone) }
+  it { should belong_to(:zone).touch }
+
+  it { should have_many(:donations).dependent(:destroy) }
 
   it { should validate_presence_of(:zone) }
   it { should validate_presence_of(:end_at) }
   it { should validate_presence_of(:start_at) }
 
-  it { should delegate_method(:zipcode).to(:zone) }
+  it { should delegate_method(:date).to(:start_at).as(:to_date) }
 
   describe ".current" do
     it "includes scheduled pickups from today and onward" do
@@ -34,6 +36,35 @@ describe ScheduledPickup do
 
     def yesterday
       today - 1.day
+    end
+  end
+
+  describe "#build_google_map" do
+    it "constructs a GoogleMap instance from the donations" do
+      id = "map"
+      callback = "callback"
+      scheduled_pickup = create(:scheduled_pickup)
+      create(:donation, :confirmed, scheduled_pickup: scheduled_pickup)
+      create(:donation, :declined, scheduled_pickup: scheduled_pickup)
+
+      google_map = scheduled_pickup.build_google_map(id: id, callback: callback)
+
+      expect(google_map.id).to eq(id)
+      expect(google_map.donations.all?(&:confirmed?)).to be true
+    end
+  end
+
+  describe "#confirmation_requested_at" do
+    around do |example|
+      Timecop.freeze { example.run }
+    end
+
+    it "returns a time 48 in advance of the earliest pickup time" do
+      scheduled_pickup = create(:scheduled_pickup, start_at: 48.hours.from_now)
+
+      confirmation_requested_at = scheduled_pickup.confirmation_requested_at
+
+      expect(confirmation_requested_at).to eq(Time.current)
     end
   end
 
